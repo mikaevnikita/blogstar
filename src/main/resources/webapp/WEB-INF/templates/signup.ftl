@@ -59,6 +59,17 @@
                 </td>
             </tr>
             <tr>
+                <td>Email:</td>
+                <td>
+                    <input type='email' name='email'/>
+                    <#if emailErrors??>
+                        <#list emailErrors as error>
+                            ${error}
+                        </#list>
+                    </#if>
+                </td>
+            </tr>
+            <tr>
                 <td>Password:</td>
                 <td>
                     <input type='password' name='password'/>

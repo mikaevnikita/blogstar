@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.mikaev.blogstar.entities.User;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -51,6 +48,11 @@ public class UserDto {
     @Size(max = 200)
     private String aboutMe;
 
+    @Email
+    private String email;
+
+    private String activationCode;
+
     public static UserDto fromUser(User user){
         return UserDto
                 .builder()
@@ -61,6 +63,8 @@ public class UserDto {
                 .dateOfBirth(user.getDateOfBirth())
                 .profilePhotoFilename(user.getProfilePhotoFilename())
                 .aboutMe(user.getAboutMe())
+                .email(user.getEmail())
+                .activationCode(user.getActivationCode())
                 .build();
     }
 }

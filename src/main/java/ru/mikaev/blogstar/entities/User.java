@@ -34,8 +34,8 @@ public class User {
     private LocalDate dateOfBirth;
 
     private String profilePhotoFilename;
+    private String aboutMe;
 
     private String email;
-
-    private String aboutMe;
+    private String activationCode;
 }

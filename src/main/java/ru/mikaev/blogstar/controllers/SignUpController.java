@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.dto.UserDto;
@@ -27,11 +28,8 @@ public class SignUpController {
     @Autowired
     private UsersService usersService;
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
 
     @GetMapping("/signup")
     public String signup(Authentication authentication, Model model){
@@ -55,12 +53,12 @@ public class SignUpController {
 
         try {
             usersService.registerUser(userDto);
-            return "redirect:/signin";
+            model.addAttribute("message", "Please check your email to activate account");
+            return "signin";
         }
         catch (UserAlreadyExistsException ex){
             model.addAttribute("message", "User exists!");
             return "signup";
         }
-
     }
 }
