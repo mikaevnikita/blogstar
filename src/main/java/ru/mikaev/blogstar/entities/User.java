@@ -34,4 +34,8 @@ public class User {
     private LocalDate dateOfBirth;
 
     private String profilePhotoFilename;
+
+    private String email;
+
+    private String aboutMe;
 }

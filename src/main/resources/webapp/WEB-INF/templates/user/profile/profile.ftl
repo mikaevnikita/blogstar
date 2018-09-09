@@ -11,6 +11,7 @@
         <p>First name: ${user.firstName}</p>
         <p>Last name: ${user.lastName}</p>
         <p>Date of birth: ${user.dateOfBirth}</p>
+        <p>About me: ${user.aboutMe}</p>
 
         <form action="/user/profile/changeProfile">
             <input type="submit" value="Change profile"/>

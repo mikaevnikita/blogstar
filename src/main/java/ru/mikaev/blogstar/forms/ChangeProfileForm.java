@@ -33,4 +33,6 @@ public class ChangeProfileForm {
 
 
     private MultipartFile profilePhoto;
+
+    private String aboutMe;
 }

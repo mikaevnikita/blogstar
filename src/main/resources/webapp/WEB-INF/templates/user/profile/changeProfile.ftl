@@ -11,11 +11,11 @@
             <td>First name:</td>
             <td>
                 <input type="text" name="firstName" value="${form.firstName}" />
-                    <#if firstNameErrors??>
-                        <#list firstNameErrors as error>
-                            ${error}
-                        </#list>
-                    </#if>
+                <#if firstNameErrors??>
+                    <#list firstNameErrors as error>
+                        ${error}
+                    </#list>
+                </#if>
             </td>
 
         </tr>
@@ -23,11 +23,11 @@
             <td>Last name:</td>
             <td>
                 <input type='text' name='lastName' value="${form.lastName}"/>
-                    <#if lastNameErrors??>
-                        <#list lastNameErrors as error>
-                            ${error}
-                        </#list>
-                    </#if>
+                <#if lastNameErrors??>
+                    <#list lastNameErrors as error>
+                        ${error}
+                    </#list>
+                </#if>
             </td>
 
         </tr>
@@ -38,11 +38,22 @@
             </td>
             <td>
                 <input type="file" name="profilePhoto"/>
-                    <#if profilePhotoErrors??>
-                        <#list profilePhotoErrors as error>
-                            ${error}
-                        </#list>
-                    </#if>
+                <#if profilePhotoErrors??>
+                    <#list profilePhotoErrors as error>
+                        ${error}
+                    </#list>
+                </#if>
+            </td>
+        </tr>
+        <tr>
+            <td>About me:</td>
+            <td>
+                <textarea rows="10" cols="45" name="aboutMe"></textarea>
+                 <#if aboutMeErrors??>
+                     <#list aboutMeErrors as error>
+                         ${error}
+                     </#list>
+                 </#if>
             </td>
         </tr>
         <tr>

@@ -48,6 +48,9 @@ public class UserDto {
 
     private String profilePhotoFilename;
 
+    @Size(max = 200)
+    private String aboutMe;
+
     public static UserDto fromUser(User user){
         return UserDto
                 .builder()
@@ -57,6 +60,7 @@ public class UserDto {
                 .lastName(user.getLastName())
                 .dateOfBirth(user.getDateOfBirth())
                 .profilePhotoFilename(user.getProfilePhotoFilename())
+                .aboutMe(user.getAboutMe())
                 .build();
     }
 }

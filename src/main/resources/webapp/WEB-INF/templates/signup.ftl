@@ -13,7 +13,7 @@
             <tr>
                 <td>Username:</td>
                 <td>
-                    <input type="text" name="username" value="<#if user??>${form.username}</#if>">
+                    <input type="text" name="username" value="<#if form??>${form.username}</#if>">
                     <#if usernameErrors??>
                         <#list usernameErrors as error>
                             ${error}
@@ -25,7 +25,7 @@
             <tr>
                 <td>First name:</td>
                 <td>
-                    <input type="text" name="firstName" value="<#if user??>${form.firstName}</#if>" />
+                    <input type="text" name="firstName" value="<#if form??>${form.firstName}</#if>" />
                     <#if firstNameErrors??>
                         <#list firstNameErrors as error>
                             ${error}
@@ -37,7 +37,7 @@
             <tr>
                 <td>Last name:</td>
                 <td>
-                    <input type='text' name='lastName' value="<#if user??>${form.lastName}</#if>"/>
+                    <input type='text' name='lastName' value="<#if form??>${form.lastName}</#if>"/>
                     <#if lastNameErrors??>
                         <#list lastNameErrors as error>
                             ${error}

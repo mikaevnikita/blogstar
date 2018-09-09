@@ -54,6 +54,7 @@ public class ProfileController{
         UserDto userDto = UserDto.fromUser(user);
         userDto.setFirstName(form.getFirstName());
         userDto.setLastName(form.getLastName());
+        userDto.setAboutMe(form.getAboutMe());
 
         if (bindingResult.hasErrors()) {
             model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
