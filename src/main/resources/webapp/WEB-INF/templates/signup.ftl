@@ -1,7 +1,6 @@
 <html>
 <head>
     <#include "general.ftl">
-    <#import "/spring.ftl" as spring/>
 </head>
 <body>
 <h1>Create your Account</h1>

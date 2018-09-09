@@ -11,7 +11,7 @@ public class MainController {
     @GetMapping("/")
     public String showMain(Authentication authentication, Model model){
         if(authentication != null){
-            return "redirect:/profile";
+            return "redirect:/user/profile";
         }
         return "main";
     }

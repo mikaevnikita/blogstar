@@ -9,10 +9,6 @@ import java.util.Map;
 
 public class ControllerUtils {
     public static Map<String, List<String>> getErrors(BindingResult bindingResult){
-/*        Collector<FieldError, ?, Map<String, String>> collector = Collectors.toMap(
-                fieldError -> fieldError.getField() + "Error",
-                FieldError::getDefaultMessage
-        );*/
         Map<String, List<String>> errorsMap = new HashMap<>();
 
         bindingResult.getFieldErrors().stream().forEach(fieldError -> {
@@ -24,7 +20,6 @@ public class ControllerUtils {
             }
             errors.add(fieldError.getDefaultMessage());
         });
-        /*return bindingResult.getFieldErrors().stream().collect(collector);*/
         return errorsMap;
     }
 }

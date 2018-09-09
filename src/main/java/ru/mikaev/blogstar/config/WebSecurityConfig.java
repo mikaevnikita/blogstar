@@ -41,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/user/**").hasAuthority("USER")
             .antMatchers("/", "/signin", "/signup").permitAll()
             .anyRequest().authenticated()
             .and()
@@ -48,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .loginPage("/signin")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/profile")
+                .defaultSuccessUrl("/user/profile")
                 .failureUrl("/signin?error=true")
                 .permitAll()
             .and()

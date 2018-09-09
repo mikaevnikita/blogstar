@@ -6,18 +6,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.mikaev.blogstar.dao.UserRepository;
+import ru.mikaev.blogstar.dao.UsersRepository;
 
 @Controller
 public class SignInController {
 
     @Autowired
-    UserRepository userRepository;
+    UsersRepository userRepository;
 
     @GetMapping("/signin")
     public String login(@RequestParam(name = "error", required = false) String error, Authentication authentication, Model model){
         if(authentication != null){
-            return "redirect:/profile";
+            return "redirect:/user/profile";
         }
         Boolean errorStatus = Boolean.valueOf(error);
         if(errorStatus != null && errorStatus != false){

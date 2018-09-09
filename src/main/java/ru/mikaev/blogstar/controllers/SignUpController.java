@@ -8,10 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.mikaev.blogstar.dao.UserRepository;
+import ru.mikaev.blogstar.dao.UsersRepository;
+import ru.mikaev.blogstar.dto.UserDto;
 import ru.mikaev.blogstar.entities.Role;
 import ru.mikaev.blogstar.entities.User;
-import ru.mikaev.blogstar.forms.SignUpForm;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
 import javax.validation.Valid;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class SignUpController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -31,15 +31,15 @@ public class SignUpController {
     @GetMapping("/signup")
     public String signup(Authentication authentication, Model model){
         if(authentication != null){
-            return "redirect:/profile";
+            return "redirect:/user/profile";
         }
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String addUser(Authentication authentication, @Valid SignUpForm form, BindingResult bindingResult, Model model){
+    public String addUser(Authentication authentication, @Valid UserDto form, BindingResult bindingResult, Model model){
         if(authentication != null){
-            return "redirect:/profile";
+            return "redirect:/user/profile";
         }
 
         if(bindingResult.hasErrors()){
