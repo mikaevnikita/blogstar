@@ -46,6 +46,8 @@ public class UserDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfBirth;
 
+    private String profilePhotoFilename;
+
     public static UserDto fromUser(User user){
         return UserDto
                 .builder()
@@ -54,6 +56,7 @@ public class UserDto {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .dateOfBirth(user.getDateOfBirth())
+                .profilePhotoFilename(user.getProfilePhotoFilename())
                 .build();
     }
 }

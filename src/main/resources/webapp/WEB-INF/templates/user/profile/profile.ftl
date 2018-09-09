@@ -6,6 +6,8 @@
     <body>
         <h1>Hello, ${user.username}</h1>
 
+        <img src="/img/${user.profilePhotoFilename}">
+
         <p>First name: ${user.firstName}</p>
         <p>Last name: ${user.lastName}</p>
         <p>Date of birth: ${user.dateOfBirth}</p>

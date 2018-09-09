@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -29,4 +30,7 @@ public class ChangeProfileForm {
     @Pattern(regexp = "[A-Za-z]+",
             message = "Last name should be contains latin letters")
     private String lastName;
+
+
+    private MultipartFile profilePhoto;
 }

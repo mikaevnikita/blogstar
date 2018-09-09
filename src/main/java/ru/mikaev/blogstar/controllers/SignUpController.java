@@ -1,6 +1,7 @@
 package ru.mikaev.blogstar.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ public class SignUpController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
 
     @GetMapping("/signup")
@@ -64,6 +66,7 @@ public class SignUpController {
                 .dateOfBirth(form.getDateOfBirth())
                 .active(true)
                 .roles(Collections.singleton(Role.USER))
+                .profilePhotoFilename("default-avatar.png")
                 .build();
 
         userRepository.save(user);
