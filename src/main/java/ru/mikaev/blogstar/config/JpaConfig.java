@@ -1,4 +1,4 @@
-package ru.mikaev.config;
+package ru.mikaev.blogstar.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -22,9 +22,9 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "ru.mikaev")
+@EnableJpaRepositories(basePackages = "ru.mikaev.blogstar")
 @PropertySources({
-        @PropertySource("classpath:ru/mikaev/jpa.properties")
+        @PropertySource("classpath:ru/mikaev/blogstar/jpa.properties")
 })
 public class JpaConfig{
 
@@ -36,7 +36,7 @@ public class JpaConfig{
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] {"ru.mikaev"});
+        em.setPackagesToScan(new String[] {"ru.mikaev.blogstar"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

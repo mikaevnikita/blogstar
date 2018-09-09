@@ -1,4 +1,4 @@
-package ru.mikaev.controllers;
+package ru.mikaev.blogstar.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.mikaev.dao.UserRepository;
+import ru.mikaev.blogstar.dao.UserRepository;
 
 @Controller
 public class SignInController {

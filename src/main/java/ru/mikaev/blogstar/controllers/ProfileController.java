@@ -1,11 +1,11 @@
-package ru.mikaev.controllers;
+package ru.mikaev.blogstar.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.mikaev.security.UserDetailsImpl;
-import ru.mikaev.dto.UserDto;
+import ru.mikaev.blogstar.security.UserDetailsImpl;
+import ru.mikaev.blogstar.dto.UserDto;
 
 @Controller
 public class ProfileController {

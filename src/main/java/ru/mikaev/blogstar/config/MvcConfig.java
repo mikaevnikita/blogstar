@@ -1,15 +1,13 @@
-package ru.mikaev.config;
+package ru.mikaev.blogstar.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
-
-
 @EnableWebMvc
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
@@ -31,9 +29,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         return freeMarkerConfigurer;
     }
 
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("main");
         registry.addViewController("/admin/").setViewName("admin/adminpanel");
     }
 }

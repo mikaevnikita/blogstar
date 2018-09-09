@@ -1,9 +1,9 @@
-package ru.mikaev.security;
+package ru.mikaev.blogstar.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.mikaev.entities.User;
+import ru.mikaev.blogstar.entities.User;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package ru.mikaev;
+package ru.mikaev.blogstar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

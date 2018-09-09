@@ -1,7 +1,7 @@
-package ru.mikaev.dao;
+package ru.mikaev.blogstar.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.mikaev.entities.User;
+import ru.mikaev.blogstar.entities.User;
 
 import java.util.Optional;
 
