@@ -5,12 +5,12 @@
 <body>
 <h1>Change profile info</h1>
 
-<form action="/user/profile" method='POST' enctype="multipart/form-data">
+<form action="/user/profile/changeProfile" method='POST' enctype="multipart/form-data">
     <table>
         <tr>
             <td>First name:</td>
             <td>
-                <input type="text" name="firstName" value="${user.firstName}" />
+                <input type="text" name="firstName" value="${form.firstName}" />
                     <#if firstNameErrors??>
                         <#list firstNameErrors as error>
                             ${error}
@@ -22,7 +22,7 @@
         <tr>
             <td>Last name:</td>
             <td>
-                <input type='text' name='lastName' value="${user.lastName}"/>
+                <input type='text' name='lastName' value="${form.lastName}"/>
                     <#if lastNameErrors??>
                         <#list lastNameErrors as error>
                             ${error}

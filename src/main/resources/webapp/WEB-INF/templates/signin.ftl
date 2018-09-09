@@ -5,8 +5,8 @@
 <body>
 <div class="container">
     <h1>Sign in</h1>
-    <#if error??>
-    <p>Incorrect login or password!</p>
+    <#if message??>
+    <p>${message}</p>
     </#if>
     <form action="/signin" method='POST'>
         <table>

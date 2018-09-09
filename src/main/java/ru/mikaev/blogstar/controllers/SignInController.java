@@ -21,7 +21,7 @@ public class SignInController {
         }
         Boolean errorStatus = Boolean.valueOf(error);
         if(errorStatus != null && errorStatus != false){
-            model.addAttribute("error", true);
+            model.addAttribute("message", "Incorrect login or password!");
         }
         return "signin";
     }

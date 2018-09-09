@@ -13,6 +13,8 @@ import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.dto.UserDto;
 import ru.mikaev.blogstar.entities.Role;
 import ru.mikaev.blogstar.entities.User;
+import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
+import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
 import javax.validation.Valid;
@@ -23,7 +25,8 @@ import java.util.Optional;
 public class SignUpController {
 
     @Autowired
-    private UsersRepository userRepository;
+    private UsersService usersService;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,38 +42,25 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public String addUser(Authentication authentication, @Valid UserDto form, BindingResult bindingResult, Model model){
+    public String addUser(Authentication authentication, @Valid UserDto userDto, BindingResult bindingResult, Model model){
         if(authentication != null){
             return "redirect:/user/profile";
         }
 
         if(bindingResult.hasErrors()){
             model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
-            model.addAttribute("form", form);
+            model.addAttribute("form", userDto);
             return "signup";
         }
 
-        Optional<User> userFromDb = userRepository.findOneByUsername(form.getUsername());
-
-        if(userFromDb.isPresent()){
+        try {
+            usersService.registerUser(userDto);
+            return "redirect:/signin";
+        }
+        catch (UserAlreadyExistsException ex){
             model.addAttribute("message", "User exists!");
             return "signup";
         }
 
-        User user = User
-                .builder()
-                .username(form.getUsername())
-                .password(passwordEncoder.encode(form.getPassword()))
-                .firstName(form.getFirstName())
-                .lastName(form.getLastName())
-                .dateOfBirth(form.getDateOfBirth())
-                .active(true)
-                .roles(Collections.singleton(Role.USER))
-                .profilePhotoFilename("default-avatar.png")
-                .build();
-
-        userRepository.save(user);
-
-        return "redirect:/signin";
     }
 }

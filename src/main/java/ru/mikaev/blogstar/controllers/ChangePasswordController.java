@@ -14,18 +14,15 @@ import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.forms.ChangePasswordForm;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
+import ru.mikaev.blogstar.services.SecurityService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
 import javax.validation.Valid;
 
 @Controller
 public class ChangePasswordController {
-
     @Autowired
-    private UsersRepository usersRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private SecurityService securityService;
 
     @GetMapping("/user/profile/changePassword")
     String showChangePasswordPage(){
@@ -42,8 +39,8 @@ public class ChangePasswordController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetails.getUser();
-        user.setPassword(passwordEncoder.encode(form.getNewPassword()));
-        usersRepository.save(user);
+
+        securityService.changePassword(user, form.getNewPassword());
 
         return "redirect:/user/profile";
     }
