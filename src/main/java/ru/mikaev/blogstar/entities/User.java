@@ -18,6 +18,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private Long id;
     @Column(unique = true)
     private String username;
@@ -37,5 +38,4 @@ public class User {
     private String aboutMe;
 
     private String email;
-    private String activationCode;
 }

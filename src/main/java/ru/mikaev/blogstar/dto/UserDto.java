@@ -51,8 +51,6 @@ public class UserDto {
     @Email
     private String email;
 
-    private String activationCode;
-
     public static UserDto fromUser(User user){
         return UserDto
                 .builder()
@@ -64,7 +62,6 @@ public class UserDto {
                 .profilePhotoFilename(user.getProfilePhotoFilename())
                 .aboutMe(user.getAboutMe())
                 .email(user.getEmail())
-                .activationCode(user.getActivationCode())
                 .build();
     }
 }

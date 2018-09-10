@@ -2,15 +2,11 @@ package ru.mikaev.blogstar.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.forms.ChangePasswordForm;
 import ru.mikaev.blogstar.security.UserDetailsImpl;

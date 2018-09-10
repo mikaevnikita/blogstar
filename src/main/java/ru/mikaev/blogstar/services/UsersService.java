@@ -25,7 +25,4 @@ public interface UsersService {
     /*
     Cannot be change (username, date of birth)(immutable), (password, email, profile photo) (use services)
      */
-    User changeProfileInfo(User user, UserDto newProfileInfo);
-
-    boolean activateUser(String code);
-}
+    User changeProfileInfo(User user, UserDto newProfileInfo);}
