@@ -22,7 +22,13 @@ import java.util.Optional;
 public interface UsersService {
 
     User registerUser(UserDto userDto) throws UserAlreadyExistsException;
+
     /*
     Cannot be change (username, date of birth)(immutable), (password, email, profile photo) (use services)
      */
-    User changeProfileInfo(User user, UserDto newProfileInfo);}
+    User changeProfileInfo(User user, UserDto newProfileInfo);
+
+    void setActive(User user, boolean active);
+}
+
+

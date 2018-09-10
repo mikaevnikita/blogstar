@@ -1,5 +1,6 @@
 package ru.mikaev.blogstar.controllers;
 
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.mikaev.blogstar.dto.UserDto;
 import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
+import ru.mikaev.blogstar.exceptions.UsersServiceException;
 import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
@@ -45,8 +47,8 @@ public class SignUpController {
             model.addAttribute("message", "Please check your email to activate account");
             return "signin";
         }
-        catch (UserAlreadyExistsException ex){
-            model.addAttribute("message", "User exists!");
+        catch (UsersServiceException ex){
+            model.addAttribute("message", ex.getMessage());
             return "signup";
         }
     }

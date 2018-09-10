@@ -6,6 +6,7 @@ import ru.mikaev.blogstar.dao.ActivationRepository;
 import ru.mikaev.blogstar.entities.ActivationEntity;
 import ru.mikaev.blogstar.entities.ActivationType;
 import ru.mikaev.blogstar.entities.User;
+import ru.mikaev.blogstar.exceptions.ActivationPairNotFoundException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,21 +16,24 @@ public class ActivationServiceUuidImpl implements ActivationService {
     @Autowired
     private ActivationRepository activationRepository;
 
+    @Autowired
+    private UsersService usersService;
+
     @Override
     public String generateActivationCode() {
         return UUID.randomUUID().toString();
     }
 
-    public boolean doActivate(String code, ActivationType activationType){
+    public void doActivate(String code, ActivationType activationType) throws ActivationPairNotFoundException {
         Optional<ActivationEntity> activationCandidate =
                 activationRepository.findOneByActivationCodeAndActivationType(code, activationType);
         if(!activationCandidate.isPresent()){
-            return false;
+            throw new ActivationPairNotFoundException("Activation pair not found");
         }
         ActivationEntity activationEntity = activationCandidate.get();
         activationRepository.delete(activationEntity);
 
-        return true;
+        executeTaskDueToActivation(activationEntity);
     }
 
     @Override
@@ -40,6 +44,14 @@ public class ActivationServiceUuidImpl implements ActivationService {
         activationEntity.setActivationType(activationType);
 
         activationRepository.save(activationEntity);
+    }
+
+    private void executeTaskDueToActivation(ActivationEntity activationEntity){
+        ActivationType activationType = activationEntity.getActivationType();
+        switch (activationType){
+            case EMAIL:
+                usersService.setActive(activationEntity.getUser(), true);
+        }
     }
 
 

@@ -37,5 +37,6 @@ public class User {
     private String profilePhotoFilename;
     private String aboutMe;
 
+    @Column(unique = true)
     private String email;
 }

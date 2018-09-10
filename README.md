@@ -10,4 +10,5 @@ What has been done:
 +Static content distribution and max upload file size
 +Services layer
 +About me
++Activation service
 +Email validation (send message to email for validate)

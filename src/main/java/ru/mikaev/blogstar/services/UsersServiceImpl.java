@@ -10,7 +10,9 @@ import ru.mikaev.blogstar.entities.ActivationType;
 import ru.mikaev.blogstar.entities.Role;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
+import ru.mikaev.blogstar.exceptions.UserEmailAlreadyExistsException;
 
+import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -28,11 +30,17 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private MailService mailService;
 
-    public User registerUser(UserDto userDto) throws UserAlreadyExistsException{
-        Optional<User> userFromDb = usersRepository.findOneByUsername(userDto.getUsername());
+    public User registerUser(UserDto userDto) throws UserAlreadyExistsException, UserEmailAlreadyExistsException{
+        Optional<User> userFromDb = usersRepository.findOneByUsernameOrEmail(userDto.getUsername(), userDto.getEmail());
 
         if(userFromDb.isPresent()){
-            throw new UserAlreadyExistsException("User already exists");
+            User user = userFromDb.get();
+
+            if(user.getUsername().equals(userDto.getUsername())) {
+                throw new UserAlreadyExistsException("User already exists !");
+            }
+            else
+                throw new UserEmailAlreadyExistsException("User with this email already exists !");
         }
 
         User user = User
@@ -42,7 +50,7 @@ public class UsersServiceImpl implements UsersService {
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .dateOfBirth(userDto.getDateOfBirth())
-                .active(true)
+                .active(false)
                 .roles(Collections.singleton(Role.USER))
                 .profilePhotoFilename("default-avatar.png")
                 .aboutMe(StringUtils.isEmpty(userDto.getAboutMe()) ? "" : userDto.getAboutMe())
@@ -67,5 +75,11 @@ public class UsersServiceImpl implements UsersService {
         user.setAboutMe(newProfileInfo.getAboutMe());
 
         return usersRepository.save(user);
+    }
+
+    @Override
+    public void setActive(User user, boolean active) {
+        user.setActive(active);
+        usersRepository.save(user);
     }
 }
