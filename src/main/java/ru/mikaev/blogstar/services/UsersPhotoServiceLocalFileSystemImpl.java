@@ -23,7 +23,7 @@ public class UsersPhotoServiceLocalFileSystemImpl implements UsersPhotoService {
     private String uploadPath;
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UsersService usersService;
 
     @Override
     public String getDefaultProfilePhotoFilename() {
@@ -33,13 +33,13 @@ public class UsersPhotoServiceLocalFileSystemImpl implements UsersPhotoService {
     @Override
     public void changeProfilePhoto(User user, MultipartFile newProfilePhoto) {
         user.setProfilePhotoFilename(savePhoto(newProfilePhoto));
-        usersRepository.save(user);
+        usersService.save(user);
     }
 
     @Override
     public void changeProfilePhoto(User user, String profilePhotoFileName) {
         user.setProfilePhotoFilename(profilePhotoFileName);
-        usersRepository.save(user);
+        usersService.save(user);
     }
 
     @Override

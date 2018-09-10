@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.entities.User;
+import ru.mikaev.blogstar.services.UsersService;
 
 import java.util.Optional;
 
@@ -14,11 +15,11 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UsersRepository userRepository;
+    private UsersService usersService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findOneByUsername(username);
+        Optional<User> user = usersService.findOneByUsername(username);
         return new UserDetailsImpl(user.orElseThrow(() -> new UsernameNotFoundException("User not found: " + username)));
     }
 }

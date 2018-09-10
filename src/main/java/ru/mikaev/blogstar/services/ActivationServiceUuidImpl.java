@@ -17,7 +17,7 @@ public class ActivationServiceUuidImpl implements ActivationService {
     private ActivationRepository activationRepository;
 
     @Autowired
-    private UsersService usersService;
+    private SecurityService securityService;
 
     @Override
     public String generateActivationCode() {
@@ -31,26 +31,28 @@ public class ActivationServiceUuidImpl implements ActivationService {
             throw new ActivationPairNotFoundException("Activation pair not found");
         }
         ActivationEntity activationEntity = activationCandidate.get();
-        activationRepository.delete(activationEntity);
-
         executeTaskDueToActivation(activationEntity);
+
+        activationRepository.delete(activationEntity);
     }
 
     @Override
-    public void bind(User user, String activationCode, ActivationType activationType) {
+    public ActivationEntity bind(User user, String activationCode, ActivationType activationType) {
         ActivationEntity activationEntity = new ActivationEntity();
         activationEntity.setUser(user);
         activationEntity.setActivationCode(activationCode);
         activationEntity.setActivationType(activationType);
 
-        activationRepository.save(activationEntity);
+        return activationRepository.save(activationEntity);
     }
 
     private void executeTaskDueToActivation(ActivationEntity activationEntity){
         ActivationType activationType = activationEntity.getActivationType();
         switch (activationType){
-            case EMAIL:
-                usersService.setActive(activationEntity.getUser(), true);
+            case REGISTRATION:
+                securityService.confirmEmail(activationEntity.getUser());
+            case CHANGE_EMAIL:
+                securityService.confirmEmail(activationEntity.getUser());
         }
     }
 

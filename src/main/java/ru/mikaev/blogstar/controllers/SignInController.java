@@ -11,9 +11,6 @@ import ru.mikaev.blogstar.dao.UsersRepository;
 @Controller
 public class SignInController {
 
-    @Autowired
-    UsersRepository userRepository;
-
     @GetMapping("/signin")
     public String login(@RequestParam(name = "error", required = false) String error, Authentication authentication, Model model){
         if(authentication != null){

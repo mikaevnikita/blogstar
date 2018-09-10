@@ -26,6 +26,6 @@ public class ActivationController {
             model.addAttribute("message", "Activation code is not found or another error");
         }
 
-        return "signin";
+        return "activate";
     }
 }

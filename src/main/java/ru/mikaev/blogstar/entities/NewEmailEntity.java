@@ -10,19 +10,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "activations")
-public class ActivationEntity {
+@Table(name = "new_emails")
+public class NewEmailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "activation_id")
     private Long id;
 
-    private String activationCode;
+    private String newEmail;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Enumerated(EnumType.STRING)
-    private ActivationType activationType;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "activation_id")
+    private ActivationEntity activationEntity;
 }

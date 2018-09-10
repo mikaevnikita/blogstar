@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.dto.UserDto;
+import ru.mikaev.blogstar.entities.NewEmailEntity;
 import ru.mikaev.blogstar.entities.Role;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
@@ -29,6 +30,18 @@ public interface UsersService {
     User changeProfileInfo(User user, UserDto newProfileInfo);
 
     void setActive(User user, boolean active);
+
+    User save(User user);
+
+    Optional<User> findOneByUsername(String username);
+
+    Optional<User> findOneByUsernameOrEmail(String username, String email);
+
+    boolean emailIsBroken(String email);
+
+    boolean usernameIsBroken(String username);
+
+    boolean emailIsBrokenNotByMe(String email, User user);
 }
 
 

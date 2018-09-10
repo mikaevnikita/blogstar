@@ -18,6 +18,10 @@
             <input type="submit" value="Change profile"/>
         </form>
 
+        <form action="/user/profile/changeEmail">
+            <input type="submit" value="Change email"/>
+        </form>
+
         <form action="/user/profile/changePassword">
             <input type="submit" value="Change password"/>
         </form>
@@ -26,5 +30,9 @@
             <input type="submit" value="Sign Out"/>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
+
+        <#if message??>
+            <p>${message}</p>
+        </#if>
     </body>
 </html>
