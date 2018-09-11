@@ -10,10 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import ru.mikaev.blogstar.dao.NewEmailsRepository;
-import ru.mikaev.blogstar.entities.ActivationEntity;
-import ru.mikaev.blogstar.entities.ActivationType;
-import ru.mikaev.blogstar.entities.NewEmailEntity;
-import ru.mikaev.blogstar.entities.User;
+import ru.mikaev.blogstar.dao.NewPasswordsRepository;
+import ru.mikaev.blogstar.entities.*;
 import ru.mikaev.blogstar.exceptions.EmailAlreadyExistsException;
 import ru.mikaev.blogstar.exceptions.InvalidEmailException;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
@@ -39,10 +37,11 @@ public class SecurityServiceImpl implements SecurityService {
     @Autowired
     private NewEmailsRepository newEmailsRepository;
 
+    @Autowired
+    private NewPasswordsRepository newPasswordsRepository;
+
     @Override
     public void changeEmail(User user, String newEmail) throws EmailAlreadyExistsException, InvalidEmailException {
-        //so checking/validating checking
-
         if(user.getEmail().equals(newEmail)){
             return;
         }
@@ -70,12 +69,24 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public void changePassword(User user, String newPassword) {
-        if(newPassword == null || newPassword.length() < 8 || newPassword.length() > 50)
-            throw new IllegalArgumentException("Invalid password");
-        user.setPassword(passwordEncoder.encode(newPassword));
-        usersService.save(user);
+        Optional<NewPasswordEntity> passwordEntityCandidate = newPasswordsRepository.findOneByUser(user);
+        if(passwordEntityCandidate.isPresent()){
+            NewPasswordEntity newPasswordEntity = passwordEntityCandidate.get();
+            newPasswordsRepository.delete(newPasswordEntity);
+        }
+
+        String activationCode = mailService.sendChangePasswordMessage(user.getEmail());
+        ActivationEntity activationEntity = activationService.bind(user, activationCode, ActivationType.CHANGE_PASSWORD);
+
+        NewPasswordEntity newPasswordEntity = new NewPasswordEntity();
+        newPasswordEntity.setNewPassword(passwordEncoder.encode(newPassword));
+        newPasswordEntity.setUser(user);
+        newPasswordEntity.setActivationEntity(activationEntity);
+
+        newPasswordsRepository.save(newPasswordEntity);
     }
 
+    @Override
     public void confirmEmail(User user){
         if(!user.isActive()) {
             usersService.setActive(user, true);
@@ -92,4 +103,15 @@ public class SecurityServiceImpl implements SecurityService {
         }
     }
 
+    @Override
+    public void confirmPassword(User user) {
+        Optional<NewPasswordEntity> passwordEntityCandidate = newPasswordsRepository.findOneByUser(user);
+        if(!passwordEntityCandidate.isPresent()){
+            return;
+        }
+        NewPasswordEntity newPasswordEntity = passwordEntityCandidate.get();
+        user.setPassword(newPasswordEntity.getNewPassword());
+        usersService.save(user);
+        newPasswordsRepository.delete(newPasswordEntity);
+    }
 }

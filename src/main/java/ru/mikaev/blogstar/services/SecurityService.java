@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface SecurityService {
     void changeEmail(User user, String newEmail) throws EmailAlreadyExistsException, InvalidEmailException;
-    void changePassword(User user, String newPassword);
     void confirmEmail(User user);
+    void changePassword(User user, String newPassword);
+    void confirmPassword(User user);
 }

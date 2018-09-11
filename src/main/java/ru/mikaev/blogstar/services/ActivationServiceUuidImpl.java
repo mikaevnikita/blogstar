@@ -53,6 +53,8 @@ public class ActivationServiceUuidImpl implements ActivationService {
                 securityService.confirmEmail(activationEntity.getUser());
             case CHANGE_EMAIL:
                 securityService.confirmEmail(activationEntity.getUser());
+            case CHANGE_PASSWORD:
+                securityService.confirmPassword(activationEntity.getUser());
         }
     }
 

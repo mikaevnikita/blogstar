@@ -61,7 +61,7 @@
             <tr>
                 <td>Email:</td>
                 <td>
-                    <input type='email' name='email'/>
+                    <input type='email' name='email' value="<#if form??>${form.email}</#if>"/>
                     <#if emailErrors??>
                         <#list emailErrors as error>
                             ${error}

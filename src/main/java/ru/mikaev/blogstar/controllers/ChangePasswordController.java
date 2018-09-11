@@ -38,6 +38,8 @@ public class ChangePasswordController {
 
         securityService.changePassword(user, form.getNewPassword());
 
-        return "redirect:/user/profile";
+        model.addAttribute("message", "Check your mail");
+        model.addAttribute("user", user);
+        return "/user/profile/profile";
     }
 }

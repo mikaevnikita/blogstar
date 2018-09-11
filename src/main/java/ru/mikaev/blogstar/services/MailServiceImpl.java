@@ -33,6 +33,12 @@ public class MailServiceImpl implements MailService {
     @Value("${email.newemail.message}")
     private String newEmailMessage;
 
+    @Value("${email.newpassword.subject}")
+    private String newPasswordSubject;
+
+    @Value("${email.newpassword.message}")
+    private String newPasswordMessage;
+
     @Value("${spring.mail.username}")
     private String from;
 
@@ -52,31 +58,46 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public String sendRegisterMessage(String emailTo, String name) {
-        String activationCode = activationService.generateActivationCode();
-
         Map<String, String> values = new HashMap<>();
         values.put("name", name);
-        values.put("activationType", ActivationType.REGISTRATION.toString());
-        values.put("activationCode", activationCode);
-        StrSubstitutor sub = new StrSubstitutor(values, "%(", ")");
-        String messageText = sub.replace(emailRegistrationMessage);
 
-        send(emailTo, emailRegistrationSubject, messageText);
-
+        String activationCode = sendMessageWithActivationCodeByTemplate(emailTo, emailRegistrationSubject,
+                emailRegistrationMessage, values, ActivationType.REGISTRATION);
         return activationCode;
     }
 
     @Override
     public String sendChangeEmailMessage(String emailTo) {
+        Map<String, String> values = new HashMap<>();
+
+        String activationCode = sendMessageWithActivationCodeByTemplate(emailTo, newEmailSubject,
+                newEmailMessage, values, ActivationType.CHANGE_EMAIL);
+        return activationCode;
+    }
+
+    @Override
+    public String sendChangePasswordMessage(String emailTo) {
+        Map<String, String> values = new HashMap<>();
+
+        String activationCode = sendMessageWithActivationCodeByTemplate(emailTo, newPasswordSubject,
+                newPasswordMessage, values, ActivationType.CHANGE_PASSWORD);
+        return activationCode;
+    }
+
+    private String sendMessageWithActivationCodeByTemplate(
+            String emailTo,
+            String subject,
+            String messageText,
+            Map<String, String> substitutions,
+            ActivationType activationType){
         String activationCode = activationService.generateActivationCode();
 
-        Map<String, String> values = new HashMap<>();
-        values.put("activationType", ActivationType.CHANGE_EMAIL.toString());
-        values.put("activationCode", activationCode);
-        StrSubstitutor sub = new StrSubstitutor(values, "%(", ")");
-        String messageText = sub.replace(newEmailMessage);
+        substitutions.put("activationType", activationType.toString());
+        substitutions.put("activationCode", activationCode);
+        StrSubstitutor sub = new StrSubstitutor(substitutions, "%(", ")");
+        String resultMessageText = sub.replace(messageText);
 
-        send(emailTo, newEmailSubject, messageText);
+        send(emailTo, subject, resultMessageText);
 
         return activationCode;
     }

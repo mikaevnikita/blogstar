@@ -4,4 +4,5 @@ public interface MailService {
     void send(String emailTo, String subject, String message);
     String sendRegisterMessage(String emailTo, String name);
     String sendChangeEmailMessage(String emailTo);
+    String sendChangePasswordMessage(String emailTo);
 }
