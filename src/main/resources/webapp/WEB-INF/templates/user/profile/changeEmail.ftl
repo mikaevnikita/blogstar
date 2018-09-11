@@ -22,6 +22,14 @@
             <td><input name="submit" type="submit" value="Change email" /></td>
         </tr>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+        <div>
+            <div class="g-recaptcha" data-sitekey="6LfuoW8UAAAAACxJHlhrFkg_NxZ7I0RMPpIJGCCf"></div>
+                <#if captchaErrors??>
+                    <#list captchaErrors as captchaError>
+                        ${captchaError}
+                    </#list>
+                </#if>
+        </div>
     </table>
 </form>
 </body>

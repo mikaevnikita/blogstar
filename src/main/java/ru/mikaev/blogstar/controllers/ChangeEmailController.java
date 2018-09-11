@@ -7,11 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.exceptions.SecurityServiceException;
 import ru.mikaev.blogstar.forms.ChangeEmailForm;
 import ru.mikaev.blogstar.forms.ChangePasswordForm;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
+import ru.mikaev.blogstar.services.CaptchaService;
 import ru.mikaev.blogstar.services.SecurityService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
