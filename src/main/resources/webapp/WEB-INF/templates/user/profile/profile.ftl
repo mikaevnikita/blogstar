@@ -34,5 +34,10 @@
         <#if message??>
             <p>${message}</p>
         </#if>
+
+        <h2>Your posts:</h2>
+        <#list posts as post>
+             <p>${post.userDto.username} -> ${post.content}</p>
+        </#list>
     </body>
 </html>
