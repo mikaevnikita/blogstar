@@ -50,7 +50,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("file://" + uploadPath + "/");
         registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+                .addResourceLocations("classpath:/webapp/WEB-INF/static/");
     }
 
     @Bean

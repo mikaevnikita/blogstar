@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.mikaev.blogstar.dto.UserDto;
 import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
 import ru.mikaev.blogstar.exceptions.UsersServiceException;
+import ru.mikaev.blogstar.forms.SignUpForm;
 import ru.mikaev.blogstar.services.CaptchaService;
 import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
@@ -45,7 +46,7 @@ public class SignUpController {
 
     @PostMapping("/signup")
     public String addUser(Authentication authentication, @RequestParam("g-recaptcha-response") String captchaResponse,
-                          @Valid UserDto userDto, BindingResult bindingResult, Model model){
+                          @Valid SignUpForm signUpForm, BindingResult bindingResult, Model model){
         if(authentication != null){
             return "redirect:/user/profile";
         }
@@ -57,12 +58,12 @@ public class SignUpController {
 
         if(bindingResult.hasErrors() || !captchaIsValid){
             model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
-            model.addAttribute("form", userDto);
+            model.addAttribute("form", signUpForm);
             return "signup";
         }
 
         try {
-            usersService.registerUser(userDto);
+            usersService.registerUser(signUpForm);
             model.addAttribute("message", "Please check your email to activate account");
             return "signin";
         }

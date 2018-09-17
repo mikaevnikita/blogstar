@@ -7,19 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mikaev.blogstar.dto.UserDto;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.forms.ChangeProfileForm;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
-import ru.mikaev.blogstar.services.CaptchaService;
 import ru.mikaev.blogstar.services.UsersPhotoService;
 import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 
 @Controller
@@ -53,19 +50,19 @@ public class ProfileController{
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetails.getUser();
 
-        UserDto userDto = UserDto.fromUser(user);
-        userDto.setFirstName(form.getFirstName());
-        userDto.setLastName(form.getLastName());
-        userDto.setAboutMe(form.getAboutMe());
-
         if (bindingResult.hasErrors()) {
+            UserDto userDto = UserDto.fromUser(user);
+            userDto.setFirstName(form.getFirstName());
+            userDto.setLastName(form.getLastName());
+            userDto.setAboutMe(form.getAboutMe());
+            
             model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
             model.addAttribute("form", form);
             model.addAttribute("user", userDto);
             return "/user/profile/changeProfile";
         }
 
-        usersService.changeProfileInfo(user, userDto);
+        usersService.changeFirstNameLastNameAboutMe(user, form);
 
         MultipartFile profilePhoto = form.getProfilePhoto();
         if(profilePhoto != null && !profilePhoto.getOriginalFilename().isEmpty()){

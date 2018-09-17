@@ -16,6 +16,7 @@ import ru.mikaev.blogstar.exceptions.EmailAlreadyExistsException;
 import ru.mikaev.blogstar.exceptions.InvalidEmailException;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
 
+import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Autowired
     private NewPasswordsRepository newPasswordsRepository;
-
+    
     @Override
     public void changeEmail(User user, String newEmail) throws EmailAlreadyExistsException, InvalidEmailException {
         if(user.getEmail().equals(newEmail)){

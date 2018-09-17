@@ -15,47 +15,22 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class UserDto {
-    //twitter length standart
-    @NotBlank
-    @Size(min = 3, max = 15)
-    @Pattern(regexp = "^[A-Za-z0-9]+(?:[_][A-Za-z0-9]+)*$",
-            message = "Username can contains latin letters, numbers and underscores")
     private String username;
-
-    @NotBlank
-    @Size(min = 8, max = 50)
-    private String password;
-
-    //35 - U.K standart
-    @NotBlank
-    @Size(max = 35)
-    @Pattern(regexp = "[A-Za-z]+",
-            message = "First name should be contains latin letters")
     private String firstName;
-
-    @NotBlank
-    @Size(max = 35)
-    @Pattern(regexp = "[A-Za-z]+",
-            message = "Last name should be contains latin letters")
     private String lastName;
 
-    @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfBirth;
 
     private String profilePhotoFilename;
 
-    @Size(max = 200)
     private String aboutMe;
 
-    @Email
     private String email;
 
     public static UserDto fromUser(User user){
         return UserDto
                 .builder()
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .dateOfBirth(user.getDateOfBirth())

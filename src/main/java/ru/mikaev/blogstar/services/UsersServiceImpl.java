@@ -1,6 +1,7 @@
 package ru.mikaev.blogstar.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -13,6 +14,8 @@ import ru.mikaev.blogstar.entities.Role;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
 import ru.mikaev.blogstar.exceptions.UserEmailAlreadyExistsException;
+import ru.mikaev.blogstar.forms.ChangeProfileForm;
+import ru.mikaev.blogstar.forms.SignUpForm;
 
 import javax.swing.text.html.Option;
 import java.util.Collections;
@@ -35,28 +38,29 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private NewEmailsRepository newEmailsRepository;
 
-    public User registerUser(UserDto userDto) throws UserAlreadyExistsException, UserEmailAlreadyExistsException{
+    @Override
+    public User registerUser(SignUpForm signUpForm) throws UserAlreadyExistsException, UserEmailAlreadyExistsException{
 
-        if(emailIsBroken(userDto.getEmail())){
+        if(emailIsBroken(signUpForm.getEmail())){
             throw new UserEmailAlreadyExistsException("Email is broken !");
         }
 
-        if(usernameIsBroken(userDto.getUsername())){
+        if(usernameIsBroken(signUpForm.getUsername())){
             throw new UserAlreadyExistsException("Username is broken !");
         }
 
         User user = User
                 .builder()
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
-                .dateOfBirth(userDto.getDateOfBirth())
+                .username(signUpForm.getUsername())
+                .password(passwordEncoder.encode(signUpForm.getPassword()))
+                .firstName(signUpForm.getFirstName())
+                .lastName(signUpForm.getLastName())
+                .dateOfBirth(signUpForm.getDateOfBirth())
                 .active(false)
                 .roles(Collections.singleton(Role.USER))
                 .profilePhotoFilename("default-avatar.png")
-                .aboutMe(StringUtils.isEmpty(userDto.getAboutMe()) ? "" : userDto.getAboutMe())
-                .email(userDto.getEmail())
+                .aboutMe(StringUtils.isEmpty(signUpForm.getAboutMe()) ? "" : signUpForm.getAboutMe())
+                .email(signUpForm.getEmail())
                 .build();
 
         usersRepository.save(user);
@@ -111,13 +115,12 @@ public class UsersServiceImpl implements UsersService {
         return false;
     }
 
-    /*
-    Cannot be change (username, date of birth)(immutable), (password, email, profile photo) (use services)
-     */
-    public User changeProfileInfo(User user, UserDto newProfileInfo){
-        user.setFirstName(newProfileInfo.getFirstName());
-        user.setLastName(newProfileInfo.getLastName());
-        user.setAboutMe(newProfileInfo.getAboutMe());
+
+    @Override
+    public User changeFirstNameLastNameAboutMe(User user, ChangeProfileForm changeProfileForm){
+        user.setFirstName(changeProfileForm.getFirstName());
+        user.setLastName(changeProfileForm.getLastName());
+        user.setAboutMe(changeProfileForm.getAboutMe());
 
         return usersRepository.save(user);
     }

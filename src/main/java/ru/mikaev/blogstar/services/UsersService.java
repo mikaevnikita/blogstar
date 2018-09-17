@@ -15,6 +15,7 @@ import ru.mikaev.blogstar.entities.Role;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.exceptions.UserAlreadyExistsException;
 import ru.mikaev.blogstar.forms.ChangeProfileForm;
+import ru.mikaev.blogstar.forms.SignUpForm;
 
 import java.io.File;
 import java.util.Collections;
@@ -22,12 +23,12 @@ import java.util.Optional;
 
 public interface UsersService {
 
-    User registerUser(UserDto userDto) throws UserAlreadyExistsException;
+    User registerUser(SignUpForm signUpForm) throws UserAlreadyExistsException;
 
     /*
     Cannot be change (username, date of birth)(immutable), (password, email, profile photo) (use services)
      */
-    User changeProfileInfo(User user, UserDto newProfileInfo);
+    User changeFirstNameLastNameAboutMe(User user, ChangeProfileForm changeProfileForm);
 
     void setActive(User user, boolean active);
 
