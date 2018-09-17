@@ -83,6 +83,16 @@ public class ProfileController{
         return "/user/profile/strangerProfile";
     }
 
+    @PostMapping("/user/{username}/subscribe")
+    String subscribe(Authentication authentication, Model model){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User sessionedUser = userDetails.getUser();
+        if(sessionedUser.getUsername().equals(username)){
+            return "redirect:/user/profile";
+        }
+
+    }
+
 
     @GetMapping("/user/profile/changeProfile")
     String showChangeProfilePage(Authentication authentication, Model model){
