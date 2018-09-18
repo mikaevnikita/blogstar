@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SubscribeEntity {
+public class SubscriptionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

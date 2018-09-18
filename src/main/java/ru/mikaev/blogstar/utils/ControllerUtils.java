@@ -1,11 +1,15 @@
 package ru.mikaev.blogstar.utils;
 
 import org.springframework.validation.BindingResult;
+import ru.mikaev.blogstar.dto.UserDto;
+import ru.mikaev.blogstar.entities.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ControllerUtils {
     public static Map<String, List<String>> getErrors(BindingResult bindingResult){
@@ -21,5 +25,12 @@ public class ControllerUtils {
             errors.add(fieldError.getDefaultMessage());
         });
         return errorsMap;
+    }
+
+    public static List<UserDto> transformToUserDto(List<User> users){
+        return users
+                .stream()
+                .map(UserDto::fromUser)
+                .collect(Collectors.toList());
     }
 }

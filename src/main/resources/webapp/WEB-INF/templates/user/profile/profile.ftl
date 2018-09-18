@@ -35,6 +35,10 @@
             <p>${message}</p>
         </#if>
 
+        <form action="/user/profile/subscriptions">
+            <input type="submit" value="My subscriptions"/>
+        </form>
+
         <h2>Your posts:</h2>
         <#list posts as post>
              <p>${post.userDto.username} -> ${post.content}</p>

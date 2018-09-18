@@ -3,6 +3,8 @@ package ru.mikaev.blogstar.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,7 @@ import ru.mikaev.blogstar.exceptions.ProfileNotFoundException;
 import ru.mikaev.blogstar.forms.ChangeProfileForm;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
 import ru.mikaev.blogstar.services.FeedService;
-import ru.mikaev.blogstar.services.SubscribesService;
+import ru.mikaev.blogstar.services.SubscriptionsService;
 import ru.mikaev.blogstar.services.UsersPhotoService;
 import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class ProfileController{
@@ -40,7 +43,7 @@ public class ProfileController{
     private FeedService feedService;
 
     @Autowired
-    private SubscribesService subscribesService;
+    private SubscriptionsService subscriptionsService;
 
     @GetMapping("/user/profile")
     String profile(Authentication authentication, Model model){
@@ -76,7 +79,7 @@ public class ProfileController{
         UserDto userDto = UserDto.fromUser(user);
 
         model.addAttribute("user", userDto);
-        model.addAttribute("subscribed", subscribesService.isSubscribed(sessionedUser, user));
+        model.addAttribute("subscribed", subscriptionsService.isSubscribed(sessionedUser, user));
 
         List<FeedPostDto> posts = feedService
                 .getFeedPostsByUser(user)
@@ -103,7 +106,7 @@ public class ProfileController{
 
         User userForSubscribe = userCandidate.get();
 
-        subscribesService.doSubscribe(sessionedUser, userForSubscribe);
+        subscriptionsService.doSubscribe(sessionedUser, userForSubscribe);
 
         return String.format("redirect:/user/%s", username);
     }
@@ -123,11 +126,21 @@ public class ProfileController{
 
         User userForUnsubscribe = userCandidate.get();
 
-        subscribesService.doUnsubscribe(sessionedUser, userForUnsubscribe);
+        subscriptionsService.doUnsubscribe(sessionedUser, userForUnsubscribe);
 
         return String.format("redirect:/user/%s", username);
     }
 
+    @GetMapping("/user/profile/subscriptions")
+    String subscriptions(Authentication authentication, Model model){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User sessionedUser = userDetails.getUser();
+
+        List<UserDto> users = ControllerUtils.transformToUserDto(subscriptionsService.getSubscriptionsByUser(sessionedUser));
+
+        model.addAttribute("subscriptions", users);
+        return "/user/profile/subscriptions";
+    }
 
     @GetMapping("/user/profile/changeProfile")
     String showChangeProfilePage(Authentication authentication, Model model){
