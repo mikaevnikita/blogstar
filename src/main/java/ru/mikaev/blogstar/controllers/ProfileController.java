@@ -23,6 +23,7 @@ import ru.mikaev.blogstar.services.UsersPhotoService;
 import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -112,7 +113,8 @@ public class ProfileController{
     }
 
     @GetMapping("/user/{username}/unsubscribe")
-    String unsubscribe(Authentication authentication, @PathVariable("username") String username, Model model){
+    String unsubscribe(Authentication authentication, @PathVariable("username") String username,
+                       Model model, HttpServletRequest request){
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User sessionedUser = userDetails.getUser();
         if(sessionedUser.getUsername().equals(username)){
@@ -128,7 +130,7 @@ public class ProfileController{
 
         subscriptionsService.doUnsubscribe(sessionedUser, userForUnsubscribe);
 
-        return String.format("redirect:/user/%s", username);
+        return "redirect:/user/profile/subscriptions/";
     }
 
     @GetMapping("/user/profile/subscriptions")
