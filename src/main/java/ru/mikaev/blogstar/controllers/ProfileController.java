@@ -16,6 +16,7 @@ import ru.mikaev.blogstar.exceptions.ProfileNotFoundException;
 import ru.mikaev.blogstar.forms.ChangeProfileForm;
 import ru.mikaev.blogstar.security.UserDetailsImpl;
 import ru.mikaev.blogstar.services.FeedService;
+import ru.mikaev.blogstar.services.SubscribesService;
 import ru.mikaev.blogstar.services.UsersPhotoService;
 import ru.mikaev.blogstar.services.UsersService;
 import ru.mikaev.blogstar.utils.ControllerUtils;
@@ -37,6 +38,9 @@ public class ProfileController{
 
     @Autowired
     private FeedService feedService;
+
+    @Autowired
+    private SubscribesService subscribesService;
 
     @GetMapping("/user/profile")
     String profile(Authentication authentication, Model model){
@@ -72,6 +76,7 @@ public class ProfileController{
         UserDto userDto = UserDto.fromUser(user);
 
         model.addAttribute("user", userDto);
+        model.addAttribute("subscribed", subscribesService.isSubscribed(sessionedUser, user));
 
         List<FeedPostDto> posts = feedService
                 .getFeedPostsByUser(user)
@@ -83,14 +88,44 @@ public class ProfileController{
         return "/user/profile/strangerProfile";
     }
 
-    @PostMapping("/user/{username}/subscribe")
-    String subscribe(Authentication authentication, Model model){
+    @GetMapping("/user/{username}/subscribe")
+    String subscribe(Authentication authentication, @PathVariable("username") String username, Model model){
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User sessionedUser = userDetails.getUser();
         if(sessionedUser.getUsername().equals(username)){
             return "redirect:/user/profile";
         }
 
+        Optional<User> userCandidate = usersService.findOneByUsername(username);
+        if(!userCandidate.isPresent()){
+            throw new ProfileNotFoundException();
+        }
+
+        User userForSubscribe = userCandidate.get();
+
+        subscribesService.doSubscribe(sessionedUser, userForSubscribe);
+
+        return String.format("redirect:/user/%s", username);
+    }
+
+    @GetMapping("/user/{username}/unsubscribe")
+    String unsubscribe(Authentication authentication, @PathVariable("username") String username, Model model){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User sessionedUser = userDetails.getUser();
+        if(sessionedUser.getUsername().equals(username)){
+            return "redirect:/user/profile";
+        }
+
+        Optional<User> userCandidate = usersService.findOneByUsername(username);
+        if(!userCandidate.isPresent()){
+            throw new ProfileNotFoundException();
+        }
+
+        User userForUnsubscribe = userCandidate.get();
+
+        subscribesService.doUnsubscribe(sessionedUser, userForUnsubscribe);
+
+        return String.format("redirect:/user/%s", username);
     }
 
 

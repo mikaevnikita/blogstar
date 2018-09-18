@@ -11,6 +11,17 @@
 <p>Date of birth: ${user.dateOfBirth}</p>
 <p>About me: ${user.aboutMe}</p>
 
+<#if subscribed>
+    <form action="/user/${user.username}/unsubscribe">
+        <input type="submit" value="Unsubscribe"/>
+    </form>
+
+    <#else>
+        <form action="/user/${user.username}/subscribe">
+            <input type="submit" value="Subscribe"/>
+        </form>
+</#if>
+
 <#if message??>
     <p>${message}</p>
 </#if>

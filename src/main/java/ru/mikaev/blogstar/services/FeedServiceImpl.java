@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mikaev.blogstar.dao.FeedPostsRepository;
+import ru.mikaev.blogstar.dao.SubscribesRepository;
 import ru.mikaev.blogstar.dao.UsersRepository;
 import ru.mikaev.blogstar.dto.FeedPostDto;
 import ru.mikaev.blogstar.entities.FeedPost;
+import ru.mikaev.blogstar.entities.SubscribeEntity;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.forms.FeedForm;
 
