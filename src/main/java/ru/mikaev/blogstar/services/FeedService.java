@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface FeedService {
     FeedPost addNewPost(User user, FeedForm feedForm);
-    List<FeedPost> getGeneralFeedPostsByUser(User user);
+    List<FeedPost> getGeneralFeedPostsByUserSortedByDateTime(User user);
     List<FeedPost> getFeedPostsByUser(User user);
 }

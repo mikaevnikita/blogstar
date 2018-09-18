@@ -31,7 +31,7 @@ public class FeedController {
         User user = userDetails.getUser();
 
         List<FeedPostDto> posts = feedService
-                .getGeneralFeedPostsByUser(user)
+                .getGeneralFeedPostsByUserSortedByDateTime(user)
                 .stream()
                 .map(FeedPostDto::fromFeedPost)
                 .collect(Collectors.toList());
