@@ -72,7 +72,7 @@ public class FeedController {
         User user = userCandidate.get();
         UserDto userDto = UserDto.fromUser(user);
 
-        Page<FeedPost> page = feedService.getGeneralFeedPostsByUser(user, pageable);
+        Page<FeedPost> page = feedService.getFeedPostsByUser(user, pageable);
         Page<FeedPostDto> pageDto = ControllerUtils.transformToPageOfFeedPostDto(page);
         model.addAttribute("page", pageDto);
         model.addAttribute("url", String.format("/user/feed/%s", username));

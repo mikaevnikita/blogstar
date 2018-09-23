@@ -23,9 +23,6 @@ public class FeedServiceImpl implements FeedService {
     @Autowired
     private FeedPostsRepository feedPostsRepository;
 
-    @Autowired
-    private SubscriptionsService subscriptionsService;
-
     @Override
     public FeedPost addNewPost(User user, FeedForm feedForm) {
         FeedPost feedPost = FeedPost.builder().user(user).content(feedForm.getContent()).dateTime(LocalDateTime.now()).build();

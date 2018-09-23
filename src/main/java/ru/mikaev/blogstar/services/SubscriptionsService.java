@@ -1,5 +1,7 @@
 package ru.mikaev.blogstar.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.mikaev.blogstar.entities.SubscriptionEntity;
 import ru.mikaev.blogstar.entities.User;
 
@@ -10,5 +12,5 @@ public interface SubscriptionsService {
     void doSubscribe(User who, User onWhom);
     void doUnsubscribe(User who, User onWhom);
     boolean isSubscribed(User who, User onWhom);
-    List<User> getSubscriptionsByUser(User user);
+    Page<User> getSubscriptionsByUser(User user, Pageable pageable);
 }

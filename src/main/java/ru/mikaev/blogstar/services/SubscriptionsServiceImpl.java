@@ -1,6 +1,8 @@
 package ru.mikaev.blogstar.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,10 +52,9 @@ public class SubscriptionsServiceImpl implements SubscriptionsService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<User> getSubscriptionsByUser(User who) {
+    public Page<User> getSubscriptionsByUser(User who, Pageable pageable) {
         return subscriptionsRepository
-                .findAllByWho(who)
-                .map(SubscriptionEntity::getOnWhom)
-                .collect(Collectors.toList());
+                .findAllByWho(who, pageable)
+                .map(SubscriptionEntity::getOnWhom);
     }
 }

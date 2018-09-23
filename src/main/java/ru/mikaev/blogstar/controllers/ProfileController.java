@@ -122,13 +122,14 @@ public class ProfileController{
     }
 
     @GetMapping("/user/profile/subscriptions")
-    String subscriptions(Authentication authentication, Model model){
+    String subscriptions(Authentication authentication, Model model, @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable){
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User sessionedUser = userDetails.getUser();
 
-        List<UserDto> users = ControllerUtils.transformToUserDto(subscriptionsService.getSubscriptionsByUser(sessionedUser));
+        Page<UserDto> users = ControllerUtils.transformToUserDto(subscriptionsService.getSubscriptionsByUser(sessionedUser, pageable));
 
-        model.addAttribute("subscriptions", users);
+        model.addAttribute("page", users);
+        model.addAttribute("url", "/user/profile/subscriptions");
         return "/user/profile/subscriptions";
     }
 
