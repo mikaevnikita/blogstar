@@ -1,6 +1,8 @@
 package ru.mikaev.blogstar.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,30 +35,13 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<FeedPost> getGeneralFeedPostsByUserSortedByDateTime(User user) {
-        return Stream
-                .concat(subscriptionsService
-                        .getSubscriptionsByUser(user)
-                        .stream()
-                        .map(this::getFeedPostsByUser)
-                                .flatMap(List::stream),
-                        getFeedPostsByUser(user)
-                                .stream())
-                .parallel()
-                .sorted(
-                        new Comparator<FeedPost>() {
-                            @Override
-                            public int compare(FeedPost o1, FeedPost o2) {
-                                //reverseOrder
-                                return -1 * o1.getDateTime().compareTo(o2.getDateTime());
-                            }
-                        })
-                .collect(Collectors.toList());
+    public Page<FeedPost> getGeneralFeedPostsByUser(User user, Pageable pageable) {
+        return getFeedPostsByUser(user, pageable);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<FeedPost> getFeedPostsByUser(User user) {
-        return feedPostsRepository.findAllByUser(user);
+    public Page<FeedPost> getFeedPostsByUser(User user, Pageable pageable) {
+        return feedPostsRepository.findAllByUser(user, pageable);
     }
 }

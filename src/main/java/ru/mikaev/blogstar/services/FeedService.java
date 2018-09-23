@@ -1,14 +1,13 @@
 package ru.mikaev.blogstar.services;
 
-import ru.mikaev.blogstar.dto.FeedPostDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.mikaev.blogstar.entities.FeedPost;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.forms.FeedForm;
 
-import java.util.List;
-
 public interface FeedService {
     FeedPost addNewPost(User user, FeedForm feedForm);
-    List<FeedPost> getGeneralFeedPostsByUserSortedByDateTime(User user);
-    List<FeedPost> getFeedPostsByUser(User user);
+    Page<FeedPost> getGeneralFeedPostsByUser(User user, Pageable pageable);
+    Page<FeedPost> getFeedPostsByUser(User user, Pageable pageable);
 }

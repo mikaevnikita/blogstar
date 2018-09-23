@@ -1,6 +1,7 @@
 <html>
     <head>
         Feed
+        <#import "../parts/pager.ftl" as p>
     </head>
     <body>
         <form action="/user/feed" method="post" enctype="multipart/form-data">
@@ -14,8 +15,10 @@
             </#list>
         </#if>
 
-        <#list posts as post>
-             <p>${post.userDto.username} posted ${post.content} at ${post.dateTime}</p>
+        <#list page.content as post>
+            <p>${post.userDto.username} posted ${post.content} at ${post.dateTime}</p>
         </#list>
+        <@p.pager url page/>
+
     </body>
 </html>

@@ -1,6 +1,10 @@
 package ru.mikaev.blogstar.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mikaev.blogstar.dto.FeedPostDto;
 import ru.mikaev.blogstar.dto.UserDto;
+import ru.mikaev.blogstar.entities.FeedPost;
 import ru.mikaev.blogstar.entities.User;
 import ru.mikaev.blogstar.exceptions.ProfileNotFoundException;
 import ru.mikaev.blogstar.forms.ChangeProfileForm;
@@ -41,9 +46,6 @@ public class ProfileController{
     private UsersPhotoService usersPhotoService;
 
     @Autowired
-    private FeedService feedService;
-
-    @Autowired
     private SubscriptionsService subscriptionsService;
 
     @GetMapping("/user/profile")
@@ -53,13 +55,6 @@ public class ProfileController{
         UserDto userDto = UserDto.fromUser(user);
 
         model.addAttribute("user", userDto);
-
-        List<FeedPostDto> posts = feedService
-                .getFeedPostsByUser(user)
-                .stream()
-                .map(FeedPostDto::fromFeedPost)
-                .collect(Collectors.toList());
-        model.addAttribute("posts", posts);
 
         return "/user/profile/profile";
     }
@@ -81,13 +76,6 @@ public class ProfileController{
 
         model.addAttribute("user", userDto);
         model.addAttribute("subscribed", subscriptionsService.isSubscribed(sessionedUser, user));
-
-        List<FeedPostDto> posts = feedService
-                .getFeedPostsByUser(user)
-                .stream()
-                .map(FeedPostDto::fromFeedPost)
-                .collect(Collectors.toList());
-        model.addAttribute("posts", posts);
 
         return "/user/profile/strangerProfile";
     }
