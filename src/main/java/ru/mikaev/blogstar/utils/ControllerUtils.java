@@ -39,7 +39,7 @@ public class ControllerUtils {
     }
 
     public static Page<FeedPostDto> transformToPageOfFeedPostDto(Page<FeedPost> page){
-        return page.map(feedPost -> FeedPostDto.fromFeedPost(feedPost));
+        return page.map(FeedPostDto::fromFeedPost);
     }
 
     public static Page<UserDto> transformToUserDto(Page<User> users){

@@ -15,3 +15,4 @@ What has been done:
 +ReCaptcha  
 +StrangerProfile  
 +Feed  
++Pagination
